@@ -83,8 +83,8 @@ jobs:
         with:
           push: true
           tags: |
-            kaw393939/601_module9:latest
-            kaw393939/601_module9:${{ github.sha }}
+            greghoff/module9_is601:latest
+            greghoff/module9_is601:${{ github.sha }}
           platforms: linux/amd64,linux/arm64
-          cache-from: type=registry,ref=kaw393939/601_module9:cache
+          cache-from: type=registry,ref=greghoff/module9_is601:cache
           cache-to: type=inline,mode=max
