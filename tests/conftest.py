@@ -218,11 +218,13 @@ def fastapi_server():
     """
     server_url = 'http://127.0.0.1:8000/'
     logger.info("Starting test server...")
+    server_process = None
 
     try:
-        # Start the FastAPI server in a subprocess
+        # Start the FastAPI server in a subprocess using sys.executable for current Python
+        import sys
         server_process = subprocess.Popen(
-            ['/home/gregh/projects/module10_is601/venv/bin/python', 'main.py'],
+            [sys.executable, 'main.py'],
             cwd=os.path.dirname(os.path.abspath(__file__ + "/../")),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
@@ -237,14 +239,15 @@ def fastapi_server():
         logger.error(f"Server error: {str(e)}")
         raise
     finally:
-        logger.info("Terminating test server...")
-        server_process.terminate()
-        try:
-            server_process.wait(timeout=5)
-            logger.info("Test server terminated gracefully.")
-        except subprocess.TimeoutExpired:
-            logger.warning("Test server did not terminate in time; killing it.")
-            server_process.kill()
+        if server_process:
+            logger.info("Terminating test server...")
+            server_process.terminate()
+            try:
+                server_process.wait(timeout=5)
+                logger.info("Test server terminated gracefully.")
+            except subprocess.TimeoutExpired:
+                logger.warning("Test server did not terminate in time; killing it.")
+                server_process.kill()
 
 # ======================================================================================
 # Browser and Page Fixtures (Optional)
