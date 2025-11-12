@@ -1,5 +1,6 @@
 # tests/conftest.py
 
+import os
 import subprocess
 import time
 import logging
@@ -219,8 +220,10 @@ def fastapi_server():
     logger.info("Starting test server...")
 
     try:
-        process = subprocess.Popen(
-            ['python', 'main.py'],
+        # Start the FastAPI server in a subprocess
+        server_process = subprocess.Popen(
+            ['/home/gregh/projects/module10_is601/venv/bin/python', 'main.py'],
+            cwd=os.path.dirname(os.path.abspath(__file__ + "/../")),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
         )
@@ -235,13 +238,13 @@ def fastapi_server():
         raise
     finally:
         logger.info("Terminating test server...")
-        process.terminate()
+        server_process.terminate()
         try:
-            process.wait(timeout=5)
+            server_process.wait(timeout=5)
             logger.info("Test server terminated gracefully.")
         except subprocess.TimeoutExpired:
             logger.warning("Test server did not terminate in time; killing it.")
-            process.kill()
+            server_process.kill()
 
 # ======================================================================================
 # Browser and Page Fixtures (Optional)
