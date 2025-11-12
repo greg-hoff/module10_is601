@@ -41,13 +41,12 @@ jobs:
           source venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
-          playwright install
+          playwright install --with-deps
       - name: Run tests
         run: |
           source venv/bin/activate
-          pytest tests/unit/ --cov=src --junitxml=test-results/junit.xml
-          pytest tests/integration/
-          pytest tests/e2e/
+          mkdir -p test-results
+          pytest --cov=app --cov-report=term-missing --junitxml=test-results/junit.xml
   security:
     needs: test
     runs-on: ubuntu-latest
