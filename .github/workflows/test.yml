@@ -13,7 +13,7 @@ jobs:
         env:
           POSTGRES_USER: user
           POSTGRES_PASSWORD: password
-          POSTGRES_DB: myappdb
+          POSTGRES_DB: mytestdb
         ports:
           - 5432:5432
         options: >-
@@ -39,6 +39,7 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
+          pip install --upgrade pip
           pip install -r requirements.txt
           playwright install
       - name: Run tests
@@ -83,8 +84,8 @@ jobs:
         with:
           push: true
           tags: |
-            greghoff/module9_is601:latest
-            greghoff/module9_is601:${{ github.sha }}
+            greghoff/module10_is601:latest
+            greghoff/module10_is601:${{ github.sha }}
           platforms: linux/amd64,linux/arm64
-          cache-from: type=registry,ref=greghoff/module9_is601:cache
+          cache-from: type=registry,ref=greghoff/module10_is601:cache
           cache-to: type=inline,mode=max
